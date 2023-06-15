@@ -11,6 +11,11 @@ from llama_index import GPTVectorStoreIndex, SimpleDirectoryReader, LLMPredictor
 from PyPDF2 import PdfReader
 import streamlit as st
 from streamlit_extras.add_vertical_space import add_vertical_space
+from langchain.chat_models.base import BaseChatModel  # Importar BaseChatModel antes de las importaciones problemáticas
+
+import sys
+sys.stdin = open('/dev/tty')  # Abre la terminal interactiva
+
 
 # Sidebar contents
 with st.sidebar:
@@ -31,8 +36,8 @@ with st.sidebar:
 load_dotenv()
 
 # Replace with your OpenAI API key
-os.environ["OPENAI_API_KEY"] = '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'
-eleven_api_key = "880ec17adcf3ee790a09c2ef884a6e8c"
+os.environ["OPENAI_API_KEY"] = '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'
+eleven_api_key = "3a3173ef3c657dc9add22b3a77b3708f"
 selected_voice_id = "2"  # Antoni voice
 
 def main():
