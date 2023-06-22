@@ -45,6 +45,7 @@ with st.sidebar:
     st.write('Made with ❤️ by [Prompt Engineer](https://youtube.com/@engineerprompt)')
     add_vertical_space(5)
     st.markdown('Modified with 💪 by [Manrrolo](https://manrrolo.github.io/Page/)')
+    use_audio = st.checkbox("Usar respuesta de audio", value=False)  # Nueva opción para activar/desactivar audio
 
 
 load_dotenv()
@@ -57,7 +58,7 @@ def get_voice_audio(text, voice_id="ErXwobaYiN019PkySvjV"):
     headers = {
       "Accept": "audio/mpeg",
       "Content-Type": "application/json",
-      "xi-api-key": "3a3173ef3c657dc9add22b3a77b3708f"
+      "xi-api-key": "62e2fd73469f1eac0523ff39cd1489d8"
     }
 
     data = {
@@ -145,9 +146,10 @@ def main():
             with get_openai_callback() as cb:
                 response = chain.run(input_documents=docs, question=query+ " Responde en español")
                 print(cb)
-            # Convert the response to audio
-            audio_file = get_voice_audio(response)
-            st.audio(audio_file)
+            if use_audio:  # Si la opción de audio está activada, generar y mostrar audio
+                # Convert the response to audio
+                audio_file = get_voice_audio(response)
+                st.audio(audio_file)
             st.write(response)
             
 
