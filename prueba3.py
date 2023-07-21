@@ -33,6 +33,7 @@ import datetime
 import csv
 import json
 
+
 # Sidebar contents
 with st.sidebar:
     st.title('🤗💬 LLM Chat App')
@@ -46,13 +47,13 @@ with st.sidebar:
     ''')
     add_vertical_space(5)
     st.write('Made with ❤️ by [Prompt Engineer](https://youtube.com/@engineerprompt)')
-    add_vertical_space(5)
+    add_vertical_space(1)
     st.markdown('Modified with 💪 by [Manrrolo](https://manrrolo.github.io/Page/)')
     use_audio = st.checkbox("Usar respuesta de audio", value=False)  # Nueva opción para activar/desactivar audio
 
 
 load_dotenv()
-
+state = False
 # Define las funciones para generar la respuesta de voz
 def get_voice_audio(text, voice_id="ErXwobaYiN019PkySvjV"):
     CHUNK_SIZE = 1024
@@ -85,9 +86,28 @@ def get_voice_audio(text, voice_id="ErXwobaYiN019PkySvjV"):
 
     return temp_filename
 
-def main():
-    st.header("Chat with PDF 💬")
+def login():
+    username = st.text_input("Nombre de usuario", value=st.session_state.get("username", ""))
+    password = st.text_input("Contraseña", type="password")
 
+    if st.button("Iniciar sesión"):
+        if username == "test" and password == "test":  # Esta es solo una comprobación dummy. Deberías verificar las credenciales de inicio de sesión de manera segura.
+            st.session_state["username"] = username
+            st.session_state["loggedin"] = True
+        else:
+            st.write("Las credenciales proporcionadas no son correctas.")
+            st.session_state["loggedin"] = False
+
+    # Aquí comienza tu aplicación principal
+    if "loggedin" in st.session_state and st.session_state["loggedin"] == True:
+        return True
+
+
+
+
+def main():
+    st.subheader("Bienvenido a la aplicación")
+    st.header("Chat with PDF 💬")
     # Load all existing .pkl files
     vector_stores = {}
     for file in glob.glob("*.pkl"):
@@ -169,5 +189,8 @@ def main():
 
             
 
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    if login():
+        main()
+    else:
+        login()
